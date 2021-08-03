@@ -1,18 +1,11 @@
-import React, { useContext } from 'react'
-import { useHistory } from 'react-router-dom';
+import React, { useContext, useRef, useState } from 'react'
 import {useForm} from '../hooks/useForm'
 import { UserContext } from './UserContext';
 import '../firebase';
 import { db } from '../firebase';
-import { v4 as uuidv4 } from 'uuid';
-//import { UserContext } from './UserContext';
-//import { types } from './types';
-//import { Card } from './Card';
-/*import { CardAdministrador } from './CardAdministrador';
-import {Card} from './Card'*/
+import { useHistory } from "react-router";
+import ModalUpdate from './ModalUpadate';
 
-
-//Proveer informacion del useContext
 
 
 
@@ -20,17 +13,19 @@ import {Card} from './Card'*/
    
 export const Forminputs = () => {
 
-  const { estadoGeneral } = useContext(UserContext)
-  console.log(estadoGeneral)
+  const [show, setShow] = useState(false)
+
+  const { estadoGeneral } = useContext(UserContext);
+
+  const history = useHistory();
+  
 
   const { equipoActivo } = estadoGeneral
   console.log(equipoActivo)
 
-  const {imagenes, precios, descripcions, titles} = equipoActivo
+  const { imagenes, precios, descripcions, titles } = equipoActivo
+  console.log(imagenes)
    
-     
-  
-
   
   const [formValues, handleInputChange] = useForm({
     imagen: imagenes,
@@ -41,6 +36,10 @@ export const Forminputs = () => {
    
   });
 
+ 
+ 
+
+  
   
   /*const word = useContext(UserContext)
   console.log(word)*/
@@ -51,9 +50,11 @@ export const Forminputs = () => {
  
 
 
-  const {imagen, title, precio, descripcion, activo} = formValues; 
- //console.log(formValues);
- //console.log(useProducts)
+  const { imagen, title, precio, descripcion } = formValues;
+  
+
+  //console.log(formValues);
+  //console.log(useProducts)
   
   //const { imagen, title, precio, descripcion }   = formValues
   //console.log(state)
@@ -65,80 +66,77 @@ export const Forminputs = () => {
     titles: formValues.title,
     precios: formValues.precio,
     descripcions: formValues.descripcion,
-    activo
-  //  id: doc.id
+    //  id: doc.id
     
   }
+
+  
+  
 
   console.log(nuevaCarta)
 
-  
-
-  //console.log(nuevaCarta)
+  // const formRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log('funciona')
+    // formRef.current.reset();
+    
+  }
+
+   const handleSend = () => {
+
+      db.collection("equipos").add(nuevaCarta);
+     console.log(nuevaCarta);
+    
+      db.collection("equipos").onSnapshot((querySnapShot) => {
+        const docs = [];
+        querySnapShot.forEach((doc) => {
+          docs.push({ ...doc.data(), id: doc.id });
+          console.log(docs);
+        });
+      });
+
+   }
+
+  const update = () => {
+
+    if (equipoActivo.titles !== formValues.title) {
+       db.collection("equipos").add(nuevaCarta);
+       console.log(nuevaCarta);
+
+       history.push("/Products");
+    }
+
+      //  db.collection("equipos").add(nuevaCarta);
+      //  console.log(nuevaCarta);
+
+      //  history.push("/Products");
+
 
     
-
-      db.collection('equipos')
-        .add(nuevaCarta)
-        console.log(nuevaCarta)
-    
-
-
-      db.collection('equipos').onSnapshot((querySnapShot) => {
-       const docs = [];
-       querySnapShot.forEach((doc) => {
-         docs.push({ ...doc.data(), id: doc.id })
-         console.log(docs)
-       })       
-      })
-    
-    
-      // db.collection('equipos')
-      //   .add(nuevaCarta)
-      //   console.log(nuevaCarta)
-
-    // nuevoArticulo(nuevaCarta)
-    // history.push('/Products');
-
-   
-
-    
-     //console.log(crearArticulo)
-     //console.log(nuevaCarta)
-     // console.log('submited');
-     //console.log(nuevaCarta); 
-     //borrarArticulo(nuevaCarta)    
   }
 
  
-
-   const update = () => {
-    //  db.collection('equipos').doc(equipoActivo).update({
-
-    //    imagenes: formValues.imagen,
-    //    titles: formValues.title,
-    //    precios: formValues.precio,
-    //    descripcions: formValues.descripcion
-     
-
-    //  })
-     console.log(123)
+  
+   const handleDelete = () => {
+     estadoGeneral.equipoActivo = {};
+     console.log(estadoGeneral);
+     history.push('/Products')
    }
 
-  //console.log(formValues)
+ 
+  // console.log(formValues.descripcion)
+  // formValues.descripcion = '';
   
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form className="formInputs"  onSubmit={handleSubmit}>
           <div className="contenedor-pregunta">
             <label>Url Imagen del Producto</label>
 
             <div className="inputs">
               <input
+                className="1"
                 type="text"
                 placeholder="https://imagen.com"
                 autoComplete="off"
@@ -147,14 +145,11 @@ export const Forminputs = () => {
                 onChange={handleInputChange}
               />
             </div>
-          </div>
 
-          <div className="contenedor-pregunta">
-            <label> Nombre del Producto </label>
-
+            <label>Nombre Producto</label>
             <div className="inputs">
               <input
-                className="input-producto"
+                className="input-producto 1"
                 name="title"
                 value={title}
                 type="text"
@@ -179,11 +174,8 @@ export const Forminputs = () => {
                 onChange={handleInputChange}
               />
             </div>
-          </div>
 
-          <div className="contenedor-pregunta">
-            <label>Descripcion del producto</label>
-
+            <label>Descripcion</label>
             <div className="inputs">
               <input
                 type="text"
@@ -196,11 +188,18 @@ export const Forminputs = () => {
             </div>
           </div>
 
-          <input className="boton-formulario" type="submit" value="send" />
+          <div className="contenedor-inputs">
+            <button className="boton-formulario" onClick={() => handleSend()}>
+              Send
+            </button>
 
-          <input className="boton-formulario" type="submit" onClick={update} value="update" />
+            <button className="boton-formulario" onClick={ () => update(setShow(true))}>Update</button>
 
+            <button className="boton-formulario cancel" onClick={handleDelete}></button>
+          </div>
         </form>
+
+         {equipoActivo.titles === formValues.title && <ModalUpdate onClose={ () => setShow(false) }show={show}/> } 
       </>
     );
 }

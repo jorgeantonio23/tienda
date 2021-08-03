@@ -16,7 +16,7 @@ import { db } from './firebase';
 
 export const App = () => {
 
-    const { estadoGeneral, nuevoArticulo, borrarArticulo, verArticulo, equipoActivo } = useProducts();
+    const { estadoGeneral, nuevoArticulo, borrarArticulo, verArticulo, equipoActivo, email, equipo  } = useProducts();
     console.log(estadoGeneral)
 
     
@@ -55,7 +55,7 @@ export const App = () => {
 
 
     
-    
+   
    
 
 
@@ -68,6 +68,9 @@ export const App = () => {
         datosEquipos,
         estadoGeneral,
         equipoActivo,
+        email,
+        equipo
+        
        
        
 
@@ -75,7 +78,6 @@ export const App = () => {
     };
 
   
-    
 
      
     if (datosEquipos.length === 0) {
@@ -90,26 +92,4 @@ export const App = () => {
         
     }
 
-    
-    return (
-
-       
-
-        
-      
-
-
-        <> 
-            
-            <UserContext.Provider value={store}>    
-               <AppRouter />
-            </UserContext.Provider>
-       
-            
-        </>    
-            
-        
-        
-       
-    )
 }

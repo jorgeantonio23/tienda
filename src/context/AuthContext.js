@@ -8,6 +8,7 @@ export const AuthProvider = (props) => {
 
     const [currentUser, setCurrentUser] = useState({});
 
+    
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             setCurrentUser(user);
@@ -21,7 +22,10 @@ export const AuthProvider = (props) => {
       return auth.signInWithEmailAndPassword(email, password)
     }
 
-    const logout = () => auth.logout();
+    const logout = () => {
+        auth.signOut();
+     }
+
     const value = {signup, login, logout, currentUser};
 
     return (

@@ -1,6 +1,7 @@
 //ESTRUCTURA DE UNA SOLA CARTA
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Cards } from './Cards'
+import Modal from './Modal';
 //import { DescripcionProducto } from './DescripcionProducto'
 //import { useProducts } from '../Store/E-comerce/hook'
 
@@ -12,6 +13,8 @@ import { Forminputs } from './FormInputs'*/
 
 
 export const Card = () => {
+
+    const [show, setShow] = useState(false)
 
     
     
@@ -49,14 +52,13 @@ export const Card = () => {
         
                 datosEquipos.map(equipo => {
                     console.log(equipo)
-                    return <Cards key={equipo.titles} equipo={equipo} />
+                    return <Cards key={equipo.titles} equipo={equipo} setShow={setShow}/>
                 })
                 
-           }
-
-           
-
+            }
             
+            <Modal onClose={() => setShow(false)} show={show} />
+
 
        </div>
 

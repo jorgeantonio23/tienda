@@ -1,46 +1,46 @@
-import React, { useContext } from 'react'
-import { UserContext } from './UserContext';
-import { Cards } from './Cards';
-//import { productReducer } from '../Store/E-comerce/reducer';
-//import {Card} from './Card'
-//import { Cards } from './Cards';
+// import React, { useContext } from 'react'
+// import { UserContext } from './UserContext';
+// import { Cards } from './Cards';
+// //import { productReducer } from '../Store/E-comerce/reducer';
+// //import {Card} from './Card'
+// //import { Cards } from './Cards';
 
 
 
-//import { Forminputs } from './FormInputs'
-export const DescripcionProducto = ( ) => {
+// //import { Forminputs } from './FormInputs'
+// export const DescripcionProducto = ( ) => {
     
-   // console.log(equipo)
+//    // console.log(equipo)
     
 
-     const { estadoGeneral, datosEquipos } = useContext(UserContext);
-     const { equipoActivo } = estadoGeneral;
+//      const { estadoGeneral, datosEquipos } = useContext(UserContext);
+//      const { equipoActivo } = estadoGeneral;
 
-    console.log(datosEquipos)
+//     console.log(datosEquipos)
    
-     console.log(estadoGeneral)
+//      console.log(estadoGeneral)
  
 
-  // if (equipoActivo === true) {
-  //   console.log("EL EQUIPO ESTA ACTIVO");   
-  // } else if(equipoActivo === false) {
-  //   console.log('EL EQUIPO ESTA INACTIVO');
-  // }
+//   // if (equipoActivo === true) {
+//   //   console.log("EL EQUIPO ESTA ACTIVO");   
+//   // } else if(equipoActivo === false) {
+//   //   console.log('EL EQUIPO ESTA INACTIVO');
+//   // }
 
   
 
   
-    return (
+//     return (
 
-        <>
+//         <>
             
-        <Cards equipo={equipoActivo} esactivo={true} />
-        {/* <button>Actualizar</button> */}
-        </>
+//         <Cards equipo={equipoActivo} esactivo={true} />
+//         {/* <button>Actualizar</button> */}
+//         </>
   
       
-    )
-}
+//     )
+// }
 
 
 /**

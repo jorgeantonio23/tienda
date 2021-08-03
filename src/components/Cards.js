@@ -1,11 +1,9 @@
 import React, { useContext } from 'react'
-import { useHistory } from "react-router-dom";
 import { UserContext } from './UserContext'
 import '../firebase';
 import { db } from '../firebase';
-import { useForm } from '../hooks/useForm';
-//import nuevaCarta from './FormInputs'
-//import { Forminputs } from './FormInputs'
+import { useAuth } from '../context/AuthContext';
+import { useHistory } from "react-router";
 
 
 
@@ -13,16 +11,30 @@ import { useForm } from '../hooks/useForm';
 
 
 
+export const Cards = ({ equipo, esactivo = false, setShow }) => {
 
-export const Cards = ({equipo, esactivo = false}) => {
+  
+  const {  currentUser } = useAuth();
+  //  const [email, setEmail] = useState("");
+  console.log(currentUser);
+
+  // const { estadoGeneral } = useContext(UserContext);
+  // console.log(estadoGeneral);
+  
+  console.log(setShow)
 
   console.log(equipo)
   console.log(esactivo)
 
 
   //const { borrarArticulo } = useContext(UserContext);
-  const { verArticulo } = useContext(UserContext);
+  const { verArticulo} = useContext(UserContext);
 
+  console.log(verArticulo)
+
+
+
+ 
   console.log(esactivo)
 
   
@@ -38,7 +50,7 @@ export const Cards = ({equipo, esactivo = false}) => {
       })
    };
 
-  let history = useHistory()
+  
 
  
   
@@ -46,28 +58,30 @@ export const Cards = ({equipo, esactivo = false}) => {
 
   const verEquipo = () => {
 
-
-    verArticulo(equipo)
-   
-    history.push('/SeeProducts')
-   
+     verArticulo(equipo)
+      
    
   }
-  //  const productInfo = () => {
-    
-  //    console.log(equipo)
-  //  }
+
+ 
+  const history = useHistory();
 
   
   const actualizar = () => {
 
     //  esactivo = true;
     //  console.log(esactivo);
-
+    verArticulo(equipo);
+    
     console.log('Producto actualizado', equipo)
     history.push('/Administrador')
 
   }
+
+  const { estadoGeneral } = useContext(UserContext);
+
+  const { equipoActivo } = estadoGeneral;
+  console.log(equipoActivo);
    
   
   
@@ -75,44 +89,52 @@ export const Cards = ({equipo, esactivo = false}) => {
   
 
 //console.log(equipo)
+  
   return (
-
-        <div className="carta2">
-            <div className="contenedor-principal" >
-
-                <div className="container-cards">
-
-                  <div className="carta">
-                    <div>
-              {/* <img className="imagenproducto" src={equipo.imagen} alt="imagen" /> */}
-               <img className="imagenproducto" src={`${equipo.imagenes}`} alt="imagen"/> 
-                    </div>
-                    <div className="caracteristicas">
-                       <h3 className="titulo-del-producto">{equipo.titles}</h3>
-                       <p className="descripcion-producto">{equipo.descripcions}</p>
-                       <p className="precio-producto">{equipo.precios}</p>
-                    </div>
-                     <button className="boton-ver btn"  onClick={ () => verEquipo(equipo.id)}>Ver Producto</button>
-                     <button  className="comprar">Comprar</button>
-                     <button className="boton-delete btn" onClick={() => handleDelete(equipo.id)}>Delete</button>
-                     {esactivo && <button onClick={ () => actualizar(equipo.id)}>Actualizar</button>}
-                  </div>
-                </div>          
-            </div>
+    <div className="card">
+      <div className="card-image">
+        <img src={`${equipo.imagenes}`} alt="imagen" />
+      </div>
+      <div className="card-text">
+        <span className="date">4 days ago</span>
+        <h2>{equipo.titles}</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, Ducimus, repudiandae
+          temporibus omnis illum maxime quod deserunt eligendi dolor
+        </p>
+      </div>
+      <div className="card-stats">
+        <div className="stat verEquipo">
+          <div className="value">
+            <button onClick={() => verEquipo(setShow(true))}>
+              Ver Producto
+            </button>
+            {/* <button className="boton-delete btn" onClick={() => handleDelete(equipo.id)}>Delete</button> */}
+          </div>
         </div>
-    )
+        <div className="stat border">
+          <div className="value">
+            {currentUser && (
+              <button
+                className="boton-delete btn"
+                onClick={() => handleDelete(equipo.id)}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="stat comprar">
+          <div className="value">
+            <button>Comprar</button>
+          </div>
+        </div>
+
+        {/* {esactivo && <button className="actualizar" onClick={ () => actualizar(equipo.id)}>Actualizar</button>}  */}
+
+       { currentUser && <button className="actualizar" onClick={ () => actualizar(equipo.id)}>Actualizar</button>}  
+      </div>
+    </div>
+  );
 }
 
- // const usuarioRef = db.collection('equipos')
-
-  // usuarioRef.doc(equipo.id)
-  //   .update({
-  //     activo: true
-  //   })
-
-  //   if (equipo.activo === true) {
-  //      const actualizar = document('boton-active')
-  //      console.log('EL ESUQIPO EST.querySelector('.boton-active2');
-  //      actualizar.classList.removeA ACTIVO', equipo)
-  // }
-    
